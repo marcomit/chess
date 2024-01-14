@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
 import { SessionProvider } from "@/providers/session";
 import { ThemeProvider } from "@/providers/theme";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Chess",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TRPCReactProvider cookies={cookies().toString()}>
             {children}
+            <Toaster />
           </TRPCReactProvider>
         </ThemeProvider>
       </body>

@@ -19,6 +19,10 @@ io.on("connect", (socket) => {
     socket.emit("user_disconnected");
   });
 
+  onSocketServer(socket, "friend", "send", (data) => {
+    emitSocketServer(socket, "friend", "send", data, data.receiverId);
+  })
+
   onSocketServer(socket, "game", "search", (data) => {
     emitSocketServer(socket, "game", "search", data);
   });

@@ -1,11 +1,9 @@
 "use client";
 
-import { addPrefix } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
-
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
 
@@ -30,5 +28,16 @@ const Toaster = ({ ...props }: ToasterProps) => {
     />
   );
 };
+
+function addPrefix<Pref extends string, Cls extends string>(
+  pref: Pref,
+  clsx: Cls
+) {
+  return clsx
+    ?.toString()
+    .split(" ")
+    .map((cls) => `${pref}${cls}`)
+    .join(" ");
+}
 
 export { Toaster };
