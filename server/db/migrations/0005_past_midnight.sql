@@ -1,0 +1,1 @@
+ALTER TABLE "games" ADD COLUMN "playedAt" timestamp DEFAULT now() NOT NULL;
