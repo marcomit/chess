@@ -1,12 +1,14 @@
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "./user";
 import { relations } from "drizzle-orm";
+
+export const friendRequestStatus = pgEnum('status', ['pending', 'accepted', 'declined']);
 
 export const friendRequests = pgTable('friendRequests', {
   id: text('id').primaryKey(),
   senderId: text('senderId').references(() => users.id),
   receiverId: text('receiverId').references(() => users.id),
-  status: text('status').notNull(), // can represent the status of the request
+  status: friendRequestStatus("status"), // can represent the status of the request
   createdAt: timestamp('createdAt').notNull().defaultNow(),
 });
 

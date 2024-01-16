@@ -7,11 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "studio": "drizzle-kit studio",
-    "migrate": "drizzle-kit generate:pg && drizzle-kit push:pg"
+    "db:generate": "drizzle-kit generate:pg",
+    "db:push": "drizzle-kit push:pg",
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "db:generate && db:push"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.14",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-navigation-menu": "^1.1.4",
     "@radix-ui/react-slot": "^1.0.2",
@@ -47,7 +50,7 @@
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
-    "drizzle-kit": "^0.20.10",
+    "drizzle-kit": "^0.20.13",
     "express": "^4.18.2",
     "postcss": "^8",
     "socket.io": "^4.7.3",
@@ -57,5 +60,5 @@
   "ct3aMetadata": {
     "initVersion": "7.25.1"
   },
-  "packageManager": "npm@10.2.0"
+  "packageManager": "bun@1.0.22"
 }

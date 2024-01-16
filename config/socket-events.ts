@@ -4,7 +4,7 @@ import { z } from "zod";
 export const events = {
   friend: {
     send: z.object({
-      receiverId: z.string().cuid(),
+      receiver: userSchema
     }),
     receive: z.object({
       sender: userSchema,

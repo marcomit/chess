@@ -3,7 +3,9 @@ import { io } from "socket.io-client";
 import type { z, ZodType } from "zod";
 
 
-const ss = io("http://localhost:8080");
+const ss = io("http://localhost:8080", {
+  transports: ["socketio"],
+});
 const onSocket = <
   TChannel extends keyof typeof events,
   TEvent extends keyof (typeof events)[TChannel],

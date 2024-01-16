@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1704993129189,
-      "tag": "0000_parched_clint_barton",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1704994037951,
-      "tag": "0001_reflective_the_renegades",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1704999860060,
-      "tag": "0002_nappy_lady_bullseye",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1705000227002,
-      "tag": "0003_nosy_william_stryker",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1705000520090,
-      "tag": "0004_absurd_captain_britain",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1705070257888,
-      "tag": "0005_past_midnight",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1705246085780,
-      "tag": "0006_stormy_iron_monger",
+      "when": 1705427097847,
+      "tag": "0000_bitter_hardball",
       "breakpoints": true
     }
   ]

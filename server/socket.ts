@@ -20,7 +20,7 @@ io.on("connect", (socket) => {
   });
 
   onSocketServer(socket, "friend", "send", (data) => {
-    emitSocketServer(socket, "friend", "send", data, data.receiverId);
+    emitSocketServer(socket, "friend", "receive", { sender: data.receiver, ...data.other });
   })
 
   onSocketServer(socket, "game", "search", (data) => {

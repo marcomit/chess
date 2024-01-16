@@ -10,13 +10,12 @@ import {
   reverseColor,
 } from "./logic";
 import { alphabet, cn } from "@/lib/utils";
-import type { Cell, Coordinate, Moves, NonEmptyCell } from "@/types/chess";
+import type { Cell, Coordinate, Moves, NonEmptyCell } from "@/types/zod-types";
 import Image from "next/image";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/components/ui/use-toast";
-import { useMatch } from "@/stores/use-match";
-import { emitSocket, offSocket, onSocket } from "@/stores/use-socket";
+import { socket } from "@/lib/socket";
+import { toast } from "sonner";
 
 export default function ChessPage({
   params: { gameId },
@@ -26,7 +25,6 @@ export default function ChessPage({
   const [registryMoves, setRegistryMoves] = useState<
     (Moves & { color: NonEmptyCell["color"] })[]
   >([]);
-  const { toast } = useToast();
   const { currentTurn: myTurn } = useMatch();
   const [board, setBoard] = useState<Cell[][]>(generateBoard());
   const [currentTurn, setCurrentTurn] =
@@ -37,9 +35,9 @@ export default function ChessPage({
   const [legalMoves, setLegalMoves] = useState<Coordinate[]>([]);
 
   useEffect(() => {
-    emitSocket("game", "join", gameId);
+    socket.emit("game", "join", gameId);
 
-    onSocket("game", "move", (moves) => {
+    socket.on("game", "move", (moves) => {
       setBoard(move(board, moves.moves));
       setLegalMoves([]);
 
@@ -47,7 +45,7 @@ export default function ChessPage({
     });
 
     return () => {
-      offSocket("game", "move");
+      socket.off("game", "move");
     };
   }, []);
 
@@ -98,7 +96,7 @@ export default function ChessPage({
               color: currentTurn,
             },
           ]);
-          emitSocket("game", "move", {
+          socket.emit("game", "move", {
             gameId,
             moves: {
               from: { row: selectedPiece.row, col: selectedPiece.col },
@@ -107,16 +105,10 @@ export default function ChessPage({
           });
           if (isCheckmateOrStelemate(board, reverseColor(currentTurn))) {
             console.log("scacco matto");
-            toast({
-              title: "Check mate",
-              description: "You lose",
-            });
+            toast("Check mate");
           }
           if (isCheckmateOrStelemate(board, reverseColor(currentTurn), false)) {
-            toast({
-              title: "Stelemate",
-              description: "You lose",
-            });
+            toast("Stelemate");
           }
           setCurrentTurn((prevTurn) => reverseColor(prevTurn));
           setLegalMoves([]);
@@ -165,8 +157,8 @@ export default function ChessPage({
                     "relative h-20 w-20",
                     (rowIndex + cellIndex) % 2 === 0 ? "bg-accent" : "bg-card",
                     selectedPiece?.col === cellIndex &&
-                      selectedPiece.row === rowIndex &&
-                      "bg-primary/50",
+                    selectedPiece.row === rowIndex &&
+                    "bg-primary/50",
                   )}
                   onClick={() =>
                     handleClick({
@@ -178,15 +170,15 @@ export default function ChessPage({
                   {legalMoves.find(
                     (move) => move.row === rowIndex && move.col === cellIndex,
                   ) && (
-                    <div
-                      className={cn(
-                        "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
-                        cell.piece !== "empty"
-                          ? "z-0 h-16 w-16 border-8 border-foreground/50"
-                          : "h-6 w-6 bg-foreground/50",
-                      )}
-                    />
-                  )}
+                      <div
+                        className={cn(
+                          "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full",
+                          cell.piece !== "empty"
+                            ? "z-0 h-16 w-16 border-8 border-foreground/50"
+                            : "h-6 w-6 bg-foreground/50",
+                        )}
+                      />
+                    )}
                   {cell.piece !== "empty" && (
                     <Image
                       src={`/images/${cell.color.at(0)}${cell.piece.at(0)}.png`}

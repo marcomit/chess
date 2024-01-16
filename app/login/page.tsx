@@ -13,11 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { BuiltInProviderType } from "next-auth/providers/index";
-import { type LiteralUnion, signIn, useSession } from "next-auth/react";
+import { type LiteralUnion, signIn } from "next-auth/react";
 import Image from "next/image";
 
 export default function Page() {
-  const { data: session } = useSession();
   async function handleClick(provider: LiteralUnion<BuiltInProviderType>) {
     try {
       await signIn(provider);
@@ -37,7 +36,6 @@ export default function Page() {
           height={100}
         />
       </div>
-      {session && <p>{session.user.name}</p>}
       <Card className="border-none shadow-none flex-1">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Create an account</CardTitle>

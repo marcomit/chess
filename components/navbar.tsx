@@ -11,7 +11,6 @@ import {
 import React from "react";
 import { navbarItem } from "@/config/navbar";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -30,7 +29,6 @@ export const Navbar = () => {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
-      <Image src={session?.user.image!} alt="" width={40} height={40} />
     </header>
   );
 };
