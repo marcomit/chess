@@ -13,6 +13,7 @@ import { ZodError } from "zod";
 
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db/db";
+import { socket } from "@/lib/socket";
 
 /**
  * 1. CONTEXT
@@ -30,6 +31,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await getServerAuthSession();
   return {
     db,
+    socket,
     session,
     ...opts,
   };

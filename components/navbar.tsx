@@ -15,8 +15,8 @@ import { useSession } from "next-auth/react";
 export const Navbar = () => {
   const { data: session } = useSession();
   return (
-    <header className="fixed flex container bg-background left-1/2 z-50 rounded-md -translate-x-1/2 top-2 h-max border shadow-md">
-      <NavigationMenu className="rounded-md w-full mx-auto">
+    <header className="fixed flex px-4 bg-background left-1/2 z-50 rounded-md -translate-x-1/2 top-2 h-max border shadow-md">
+      <NavigationMenu className="rounded-md mx-auto">
         <NavigationMenuList>
           {navbarItem.map(({ title, href }) => (
             <NavigationMenuItem key={href}>

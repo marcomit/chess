@@ -1,5 +1,5 @@
 {
-  "id": "f4e869dc-8703-4c24-8c86-a048252df3b4",
+  "id": "ab6b5450-a9d7-4009-b90d-6b97de465f6e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -186,9 +186,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "senderId": {
           "name": "senderId",
@@ -206,7 +207,8 @@
           "name": "status",
           "type": "status",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'pending'"
         },
         "createdAt": {
           "name": "createdAt",

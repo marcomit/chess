@@ -33,10 +33,10 @@ CREATE TABLE IF NOT EXISTS "verificationToken" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "friendRequests" (
-	"id" text PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"senderId" text,
 	"receiverId" text,
-	"status" "status",
+	"status" "status" DEFAULT 'pending',
 	"createdAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint

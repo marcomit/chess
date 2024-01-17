@@ -1,7 +1,7 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { friendRequests } from "@/server/db/schema/friend-request";
 import { users } from "@/server/db/schema/user";
-import { and, eq, or, sql } from "drizzle-orm";
+import { and, eq, like, not, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const friendRouter = createTRPCRouter({
@@ -16,7 +16,10 @@ export const friendRouter = createTRPCRouter({
       .innerJoin(
         friendRequests,
         and(
-          eq(friendRequests.senderId, users.id),
+          or(
+            eq(friendRequests.senderId, users.id),
+            eq(friendRequests.receiverId, users.id)
+          ),
           eq(friendRequests.status, "accepted")
         )
       )
@@ -26,51 +29,45 @@ export const friendRouter = createTRPCRouter({
   getReceivedFriendRequests: protectedProcedure.query(
     async ({ ctx: { session, db } }) => {
       const receivedFriendRequests = await db
-        .select({
-          senderId: friendRequests.senderId,
-          senderName: users.name,
-        })
+        .select()
         .from(users)
         .innerJoin(
           friendRequests,
           and(
-            eq(friendRequests.receiverId, users.id),
+            eq(friendRequests.senderId, users.id),
             eq(friendRequests.status, "pending")
           )
         )
-        .where(eq(friendRequests.senderId, session.user.id));
+        .where(eq(friendRequests.receiverId, session.user.id));
       return receivedFriendRequests;
     }
   ),
   getRequestSent: protectedProcedure.query(async ({ ctx: { session, db } }) => {
     const sentFriendRequests = await db
-      .select({
-        receiverId: friendRequests.receiverId,
-        receiverName: users.name,
-      })
+      .select()
       .from(users)
       .innerJoin(
         friendRequests,
         and(
-          eq(friendRequests.senderId, users.id),
+          eq(friendRequests.receiverId, users.id),
           eq(friendRequests.status, "pending")
         )
       )
-      .where(eq(friendRequests.receiverId, session.user.id));
+      .where(eq(friendRequests.senderId, session.user.id));
     return sentFriendRequests;
   }),
-  completion: publicProcedure.input(z.object({
-    name: z.string()
-  }))
-    .query(async ({ ctx: { db }, input: { name } }) => {
-      const usersSearch = await db.select({
-        name: users.name,
-        email: users.email,
-        image: users.image
-      })
+  completion: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx: { db, session }, input: name }) => {
+      const usersSearch = await db
+        .select()
         .from(users)
-        .where(or(sql`${users.name} LIKE '${name}%'`,
-          sql`${users.email} LIKE '%${name}%'`))
+        .where(
+          and(
+            or(like(users.name, `%${name}%`), like(users.email, `%${name}%`)),
+            not(eq(users.id, session.user.id))
+          )
+        );
       return usersSearch;
-    })
+    }),
 });

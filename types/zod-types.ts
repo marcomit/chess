@@ -23,10 +23,11 @@ export const emptyCell = z.object({
 export const cell = z.union([nonEmptyCell, emptyCell]);
 
 export const userSchema = z.object({
-  id: z.string().cuid(),
-  image: z.string(),
-  name: z.string(),
-  email: z.string(),
+  id: z.string(),
+  image: z.string().nullable(),
+  name: z.string().nullable(),
+  email: z.string().nullable(),
+  emailVerified: z.date().nullable(),
 });
 
 export const friendRequestStatus = z.enum([
