@@ -1,11 +1,39 @@
-import { socket } from "@/lib/socket";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 import { getServerAuthSession } from "@/server/auth";
-import { api } from "@/trpc/server";
-import Link from "next/link";
 
 export default async function Page() {
-  const session = await getServerAuthSession()
-  return <>
-    <p>qweqweqwe</p>
-  </>
+  const session = await getServerAuthSession();
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Select category</CardTitle>
+          <CardDescription>match</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Select>
+            <SelectTrigger asChild>
+              <Button>Select category</Button>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem>p</SelectItem>
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
+    </>
+  );
 }

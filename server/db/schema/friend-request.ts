@@ -15,7 +15,6 @@ export const friendRequests = pgTable("friendRequests", {
   status: friendRequestStatus("status").default("pending"), // can represent the status of the request
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 });
-
 export const friendRequestsRelations = relations(friendRequests, ({ one }) => ({
   sender: one(users, {
     fields: [friendRequests.senderId],
@@ -28,3 +27,6 @@ export const friendRequestsRelations = relations(friendRequests, ({ one }) => ({
     relationName: "receivedFriendRequests",
   }),
 }));
+
+export type NewFriendRequest = typeof friendRequests.$inferInsert;
+export type FriendRequest = typeof friendRequests.$inferSelect;

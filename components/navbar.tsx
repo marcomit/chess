@@ -11,11 +11,12 @@ import {
 import React from "react";
 import { navbarItem } from "@/config/navbar";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export const Navbar = () => {
   const { data: session } = useSession();
   return (
-    <header className="fixed flex px-4 bg-background left-1/2 z-50 rounded-md -translate-x-1/2 top-2 h-max border shadow-md">
+    <header className="fixed flex overflow-hidden bg-background left-1/2 z-50 rounded-md -translate-x-1/2 top-2 h-max border shadow-md">
       <NavigationMenu className="rounded-md mx-auto">
         <NavigationMenuList>
           {navbarItem.map(({ title, href }) => (
@@ -29,6 +30,7 @@ export const Navbar = () => {
           ))}
         </NavigationMenuList>
       </NavigationMenu>
+      <Image src={session?.user.image!} alt="" width={40} height={40} />
     </header>
   );
 };

@@ -1,4 +1,6 @@
 import { AddFriendDialog } from "@/components/add-friend-dialog";
+import { Icons } from "@/components/icons";
+import { ReceivedCard } from "@/components/request/received-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/trpc/server";
 import { Suspense } from "react";
@@ -14,22 +16,25 @@ export default async function Page() {
           <TabsTrigger value="sent">Request sent</TabsTrigger>
         </TabsList>
         <TabsContent value="friends">
-          <p>Friends</p>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={<Icons.spinner className="animate-spin size-5" />}
+          >
             <FriendTab />
           </Suspense>
         </TabsContent>
 
         <TabsContent value="received">
-          <p>Received request</p>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={<Icons.spinner className="animate-spin size-5" />}
+          >
             <ReceivedTab />
           </Suspense>
         </TabsContent>
 
         <TabsContent value="sent">
-          <p>Request sent</p>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={<Icons.spinner className="animate-spin size-5" />}
+          >
             <SentTab />
           </Suspense>
         </TabsContent>
@@ -40,16 +45,22 @@ export default async function Page() {
 
 const FriendTab = async () => {
   const friends = await api.friend.getFriends.query();
-  return <>{JSON.stringify(friends)}</>;
+  return (
+    <>{friends.length === 0 ? <p>No friends...</p> : JSON.stringify(friends)}</>
+  );
 };
 
 const ReceivedTab = async () => {
   const received = await api.friend.getReceivedFriendRequests.query();
   return (
     <>
-      {received.map((request) => (
-        <p key={request.friendRequests.id}>{request.user.email}</p>
-      ))}
+      {received.length === 0 ? (
+        <p>No users...</p>
+      ) : (
+        received.map(({ friendRequests, user }) => (
+          <ReceivedCard request={friendRequests} user={user} key={user.id} />
+        ))
+      )}
     </>
   );
 };
@@ -58,9 +69,13 @@ const SentTab = async () => {
   const sent = await api.friend.getRequestSent.query();
   return (
     <>
-      {sent.map((request) => (
-        <p key={request.friendRequests.id}>{request.user.email}</p>
-      ))}
+      {sent.length === 0 ? (
+        <p>No users...</p>
+      ) : (
+        sent.map((request) => (
+          <p key={request.friendRequests.id}>{request.user.email}</p>
+        ))
+      )}
     </>
   );
 };

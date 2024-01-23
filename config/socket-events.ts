@@ -1,15 +1,23 @@
-import { uuidSchema, userSchema, friendRequestStatus, moves } from "@/types/zod-types";
+import {
+  uuidSchema,
+  userSchema,
+  friendRequestStatus,
+  moves,
+} from "@/types/zod-types";
 import { z } from "zod";
 
 export const events = {
   friend: {
     send: z.object({
-      receiver: userSchema
+      receiver: userSchema,
     }),
     receive: z.object({
       sender: userSchema,
     }),
-    responde: friendRequestStatus,
+    responde: z.object({
+      status: friendRequestStatus,
+      requestId: z.string(),
+    }),
   },
   utils: {
     join: z.string(),

@@ -30,11 +30,7 @@ export const userSchema = z.object({
   emailVerified: z.date().nullable(),
 });
 
-export const friendRequestStatus = z.enum([
-  "IN_PROGRESS",
-  "REJECTED",
-  "ACCEPTED",
-]);
+export const friendRequestStatus = z.enum(["accepted", "declined", "pending"]);
 export const uuidSchema = z.string().uuid();
 
 export type User = z.infer<typeof userSchema>;
