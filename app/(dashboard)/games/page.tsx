@@ -29,7 +29,7 @@ export default async function Page() {
               <Button>Select category</Button>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem>p</SelectItem>
+              <SelectItem value="pr">p</SelectItem>
             </SelectContent>
           </Select>
         </CardContent>
